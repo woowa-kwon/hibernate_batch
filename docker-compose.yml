@@ -1,0 +1,9 @@
+version: "3.8"
+services:
+  hibernate_batch_mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: hibernate_batch
+    ports:
+      - "3306:3306"

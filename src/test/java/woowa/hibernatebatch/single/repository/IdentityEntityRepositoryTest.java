@@ -1,0 +1,111 @@
+package woowa.hibernatebatch.single.repository;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.test.annotation.Commit;
+import woowa.hibernatebatch.TestSupport;
+import woowa.hibernatebatch.single.model.IdentityEntity;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+class IdentityEntityRepositoryTest extends TestSupport {
+
+    @Autowired
+    private IdentityEntityRepository identityEntityRepository;
+
+    @BeforeEach
+    @Commit
+    void setup() {
+        truncate();
+    }
+
+    @AfterEach
+    @Commit
+    void tearDown() {
+        truncate();
+    }
+
+    private void truncate() {
+        truncate("identity");
+    }
+
+    @Test
+    void save() throws Exception {
+        IdentityEntity entity = IdentityEntity.of();
+
+        final IdentityEntity save = identityEntityRepository.saveAndFlush(entity);
+
+        final IdentityEntity find = identityEntityRepository.findById(save.getId()).get();
+        assertThat(find.getId()).isNotNull();
+        assertThat(find.getId()).isEqualTo(save.getId());
+        assertThat(find.getC1()).isEqualTo(save.getC1());
+        assertThat(find.getC2()).isEqualTo(save.getC2());
+        assertThat(find.getC3()).isEqualTo(save.getC3());
+        assertThat(find.getC4()).isEqualTo(save.getC4());
+        assertThat(find.getC5()).isEqualTo(save.getC5());
+
+        assertThat(find.getVersion()).isNotNull();
+        System.out.println(find);
+    }
+
+    @DisplayName("자동증가 엔티티 여러개 한번에 저장")
+    @Test
+    void saveAll() throws Exception {
+        final List<IdentityEntity> identityEntities = Stream.generate(IdentityEntity::of)
+                .limit(3)
+                .collect(Collectors.toList());
+
+        identityEntityRepository.saveAll(identityEntities);
+    }
+
+    @Test
+    void updateAll() throws Exception {
+        int size = 7;
+        insertTestValues(INSERT_IDENTITY, identityParameters(size));
+
+        Pageable pageable = PageRequest.of(0, size);
+        while (true) {
+            final Slice<IdentityEntity> slice = identityEntityRepository.findAllIdentityEntities(pageable);
+            final List<IdentityEntity> identityEntities = slice.getContent();
+            identityEntities.forEach(IdentityEntity::plus);
+
+            if (slice.isLast()) {
+                break;
+            }
+            pageable = slice.nextPageable();
+        }
+
+        flush();
+    }
+
+    @Test
+    void updateAll2() throws Exception {
+        int size = 3;
+        insertTestValues(INSERT_IDENTITY, identityParameters(size));
+
+        Pageable pageable = PageRequest.of(0, size);
+        while (true) {
+            final Slice<IdentityEntity> slice = identityEntityRepository.findAllIdentityEntities(pageable);
+            final List<IdentityEntity> identityEntities = slice.getContent();
+            identityEntities.forEach(IdentityEntity::plus);
+
+            if (slice.isLast()) {
+                break;
+            }
+            pageable = slice.nextPageable();
+        }
+
+        flush();
+    }
+
+}
