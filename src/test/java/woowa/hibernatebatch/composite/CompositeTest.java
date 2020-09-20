@@ -3,17 +3,14 @@ package woowa.hibernatebatch.composite;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import woowa.hibernatebatch.TestSupport;
 import woowa.hibernatebatch.single.model.IdentityEntity;
 import woowa.hibernatebatch.single.model.NonIdentityEntity;
 import woowa.hibernatebatch.single.model.UUIDEntity;
 import woowa.hibernatebatch.single.repository.IdentityEntityRepository;
 import woowa.hibernatebatch.single.repository.NonIdentityEntityRepository;
-import woowa.hibernatebatch.relation.repository.ParentEntityRepository;
 import woowa.hibernatebatch.single.repository.UUIDEntityRepository;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -134,16 +131,16 @@ public class CompositeTest extends TestSupport {
 
     @DisplayName("자동증가 엔티티와 자동증가 아닌 엔티티 업데이트")
     @Test
-    void update() throws Exception {
-        final int size = 3;
+    void updateAllIdentityEntityAndNonIdentityEntity() throws Exception {
+        final int size = 4;
         insertTestValues(INSERT_IDENTITY, identityParameters(size));
         insertTestValues(INSERT_NON_IDENTITY, nonIdentityParameters(size));
 
-        final PageRequest page = PageRequest.of(0, size);
-        final List<NonIdentityEntity> nonIdentityEntities = nonIdentityEntityRepository.findAllIdentityEntities(page).getContent();
-        final List<IdentityEntity> identityEntities = identityEntityRepository.findAllIdentityEntities(page).getContent();
-        nonIdentityEntities.forEach(NonIdentityEntity::plus);
+        final List<IdentityEntity> identityEntities = identityEntityRepository.findAll();
         identityEntities.forEach(IdentityEntity::plus);
+
+        final List<NonIdentityEntity> nonIdentityEntities = nonIdentityEntityRepository.findAll();
+        nonIdentityEntities.forEach(NonIdentityEntity::plus);
 
         flush();
     }
