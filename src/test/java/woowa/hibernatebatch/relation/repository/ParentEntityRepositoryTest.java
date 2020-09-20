@@ -95,12 +95,24 @@ class ParentEntityRepositoryTest extends TestSupport {
     }
 
     @Test
-    void update() throws Exception {
+    void updateAll() throws Exception {
         final int parentSize = 5;
         insertTestValues(INSERT_PARENT, parentParameters(parentSize));
         insertTestValues(INSERT_CHILD, childParameters(parentSize, 4));
 
         final List<ParentEntity> parents = parentRepository.findAll();
+        parents.forEach(ParentEntity::plus);
+
+        flush();
+    }
+
+    @Test
+    void updateAll2() throws Exception {
+        final int parentSize = 5;
+        insertTestValues(INSERT_PARENT, parentParameters(parentSize));
+        insertTestValues(INSERT_CHILD, childParameters(parentSize, 4));
+
+        final List<ParentEntity> parents = parentRepository.findAllParentAndChild();
         parents.forEach(ParentEntity::plus);
 
         flush();
