@@ -73,7 +73,7 @@ class IdentityEntityRepositoryTest extends TestSupport {
     @DisplayName("조회한 엔티티 전체 업데이트")
     @Test
     void updateAll() throws Exception {
-        int size = 3;
+        int size = 4;
         insertTestValues(INSERT_IDENTITY, identityParameters(size));
 
         final List<IdentityEntity> identityEntities = identityEntityRepository.findAll();
@@ -82,10 +82,10 @@ class IdentityEntityRepositoryTest extends TestSupport {
         flush();
     }
 
-    @DisplayName("4개로 늘려서 업데이트")
+    @DisplayName("3개만 업데이트")
     @Test
     void updateAll2() throws Exception {
-        int size = 4;
+        int size = 3;
         insertTestValues(INSERT_IDENTITY, identityParameters(size));
 
         final List<IdentityEntity> identityEntities = identityEntityRepository.findAll();
