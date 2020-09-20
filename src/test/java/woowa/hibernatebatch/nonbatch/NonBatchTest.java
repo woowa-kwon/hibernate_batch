@@ -25,7 +25,7 @@ public class NonBatchTest extends TestSupport {
     private static final String INSERT_BATCH = "INSERT INTO non_batch(c1, c2, c3, c4, c5, c6, c7, c8, c9, c10) VALUES (:c1, :c2, :c3, :c4, :c5, :c6, :c7, :c8, :c9, :c10)";
     private static final String COUNT_QUERY = "SELECT COUNT(*) FROM non_batch";
 
-    private static final int SIZE = 2000;
+    private static final int SIZE = 3000;
 
     @Commit
     @BeforeEach

@@ -17,6 +17,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class UUIDEntityRepositoryTest extends TestSupport {
 
+    private static final int SIZE = 3000;
+
     @Autowired
     private UUIDEntityRepository uuidEntityRepository;
 
@@ -62,21 +64,21 @@ class UUIDEntityRepositoryTest extends TestSupport {
         assertThat(find.getC15()).isEqualTo(save.getC15());
     }
 
-    @DisplayName("2000 개 생성하여 한번에 저장")
+    @DisplayName("3000 개 생성하여 한번에 저장")
     @Test
     void saveAll() throws Exception {
         final List<UUIDEntity> uuidEntities = Stream.generate(UUIDEntity::of)
-                .limit(2000)
+                .limit(SIZE)
                 .collect(Collectors.toList());
 
         uuidEntityRepository.saveAll(uuidEntities);
         flush();
     }
 
-    @DisplayName("2000 개 한번에 업데이트")
+    @DisplayName("3000 개 한번에 업데이트")
     @Test
     void update() throws Exception {
-        insertTestValues(INSERT_UUID, uuidParameters(2000));
+        insertTestValues(INSERT_UUID, uuidParameters(SIZE));
 
         final List<UUIDEntity> uuidEntities = uuidEntityRepository.findAll();
         uuidEntities.forEach(UUIDEntity::plus);

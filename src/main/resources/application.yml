@@ -19,7 +19,7 @@ spring:
         format_sql: true
         show_sql: false
         jdbc:
-          batch_size: 2000
+          batch_size: 3000
           batch_versioned_data: true
         order_inserts: true
         order_updates: true
