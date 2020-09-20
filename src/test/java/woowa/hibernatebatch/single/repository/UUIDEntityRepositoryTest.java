@@ -73,6 +73,9 @@ class UUIDEntityRepositoryTest extends TestSupport {
 
         uuidEntityRepository.saveAll(uuidEntities);
         flush();
+
+        final long count = uuidEntityRepository.count();
+        assertThat(count).isEqualTo(SIZE);
     }
 
     @DisplayName("3000 개 한번에 업데이트")
