@@ -28,4 +28,4 @@ spring:
 logging:
   level:
     org.hibernate:
-#      SQL: debug # 하이버네이트 SQL 로그 설정
+      SQL: debug # 하이버네이트 SQL 로그 설정

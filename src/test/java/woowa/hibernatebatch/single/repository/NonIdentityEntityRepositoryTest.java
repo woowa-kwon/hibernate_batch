@@ -58,7 +58,7 @@ class NonIdentityEntityRepositoryTest extends TestSupport {
     @DisplayName("엔티티 한건씩 save 호출")
     @Test
     void saveAll() throws Exception {
-        final int size = 5;
+        final int size = 3;
         final List<NonIdentityEntity> nonIdentityEntities = createNonIdentityEntities(size);
 
         for (NonIdentityEntity nonIdentityEntity : nonIdentityEntities) {
@@ -70,7 +70,7 @@ class NonIdentityEntityRepositoryTest extends TestSupport {
     @DisplayName("엔티티 목록 전체를 saveAll 호출")
     @Test
     void saveAll2() throws Exception {
-        final int size = 5;
+        final int size = 3;
         final List<NonIdentityEntity> nonIdentityEntities = createNonIdentityEntities(size);
 
         nonIdentityEntityRepository.saveAll(nonIdentityEntities);
@@ -117,7 +117,7 @@ class NonIdentityEntityRepositoryTest extends TestSupport {
     @DisplayName("저장한 목록 전체 한번에 업데이트")
     @Test
     void updateAll() throws Exception {
-        final int size = 10;
+        final int size = 5;
         insertTestValues(INSERT_NON_IDENTITY, nonIdentityParameters(size));
         final List<NonIdentityEntity> nonIdentityEntities = nonIdentityEntityRepository.findAll();
         nonIdentityEntities.forEach(NonIdentityEntity::plus);

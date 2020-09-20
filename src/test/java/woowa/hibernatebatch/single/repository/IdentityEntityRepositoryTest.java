@@ -61,8 +61,10 @@ class IdentityEntityRepositoryTest extends TestSupport {
     @DisplayName("자동증가 엔티티 여러개 한번에 저장")
     @Test
     void saveAll() throws Exception {
+        final int size = 3;
+
         final List<IdentityEntity> identityEntities = Stream.generate(IdentityEntity::of)
-                .limit(3)
+                .limit(size)
                 .collect(Collectors.toList());
 
         identityEntityRepository.saveAll(identityEntities);
@@ -71,7 +73,7 @@ class IdentityEntityRepositoryTest extends TestSupport {
     @DisplayName("조회한 엔티티 전체 업데이트")
     @Test
     void updateAll() throws Exception {
-        int size = 5;
+        int size = 3;
         insertTestValues(INSERT_IDENTITY, identityParameters(size));
 
         final List<IdentityEntity> identityEntities = identityEntityRepository.findAll();
@@ -80,10 +82,10 @@ class IdentityEntityRepositoryTest extends TestSupport {
         flush();
     }
 
-    @DisplayName("3개만 조회해서 업데이트")
+    @DisplayName("4개로 늘려서 업데이트")
     @Test
     void updateAll2() throws Exception {
-        int size = 3;
+        int size = 4;
         insertTestValues(INSERT_IDENTITY, identityParameters(size));
 
         final List<IdentityEntity> identityEntities = identityEntityRepository.findAll();
