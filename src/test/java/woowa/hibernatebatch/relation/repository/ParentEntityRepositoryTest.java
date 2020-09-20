@@ -5,9 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.test.annotation.Commit;
 import woowa.hibernatebatch.TestSupport;
 import woowa.hibernatebatch.relation.model.ChildEntity;
@@ -15,7 +12,6 @@ import woowa.hibernatebatch.relation.model.ParentEntity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -102,19 +98,11 @@ class ParentEntityRepositoryTest extends TestSupport {
     void update() throws Exception {
         final int parentSize = 5;
         insertTestValues(INSERT_PARENT, parentParameters(parentSize));
-        insertTestValues(INSERT_CHILD, childParameters(parentSize, 3));
+        insertTestValues(INSERT_CHILD, childParameters(parentSize, 4));
 
-        Pageable pageable = PageRequest.of(0, 10);
-        while (true) {
-            final Slice<ParentEntity> slice = parentRepository.findAllParent(pageable);
-            final List<ParentEntity> parents = slice.getContent();
-            parents.forEach(ParentEntity::plus);
+        final List<ParentEntity> parents = parentRepository.findAll();
+        parents.forEach(ParentEntity::plus);
 
-            if (slice.isLast()) {
-                break;
-            }
-            pageable = slice.nextPageable();
-        }
         flush();
     }
 
