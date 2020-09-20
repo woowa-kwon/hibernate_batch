@@ -68,32 +68,38 @@ class IdentityEntityRepositoryTest extends TestSupport {
         identityEntityRepository.saveAll(identityEntities);
     }
 
+    @DisplayName("조회한 엔티티 전체 업데이트")
     @Test
     void updateAll() throws Exception {
-        int size = 7;
+        int size = 5;
         insertTestValues(INSERT_IDENTITY, identityParameters(size));
 
-        Pageable pageable = PageRequest.of(0, size);
-        while (true) {
-            final Slice<IdentityEntity> slice = identityEntityRepository.findAllIdentityEntities(pageable);
-            final List<IdentityEntity> identityEntities = slice.getContent();
-            identityEntities.forEach(IdentityEntity::plus);
-
-            if (slice.isLast()) {
-                break;
-            }
-            pageable = slice.nextPageable();
-        }
+        final List<IdentityEntity> identityEntities = identityEntityRepository.findAll();
+        identityEntities.forEach(IdentityEntity::plus);
 
         flush();
     }
 
+    @DisplayName("3개만 조회해서 업데이트")
     @Test
     void updateAll2() throws Exception {
         int size = 3;
         insertTestValues(INSERT_IDENTITY, identityParameters(size));
 
-        Pageable pageable = PageRequest.of(0, size);
+        final List<IdentityEntity> identityEntities = identityEntityRepository.findAll();
+        identityEntities.forEach(IdentityEntity::plus);
+
+        flush();
+    }
+
+    @DisplayName("한 트랜잭션에서 분할 조회하여 업데이트")
+    @Test
+    void updateAll3() throws Exception {
+        final int insertSize = 10;
+        final int pageSize = 5;
+        insertTestValues(INSERT_IDENTITY, identityParameters(insertSize));
+
+        Pageable pageable = PageRequest.of(0, pageSize);
         while (true) {
             final Slice<IdentityEntity> slice = identityEntityRepository.findAllIdentityEntities(pageable);
             final List<IdentityEntity> identityEntities = slice.getContent();

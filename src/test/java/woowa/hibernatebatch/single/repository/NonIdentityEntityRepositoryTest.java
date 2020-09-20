@@ -2,6 +2,7 @@ package woowa.hibernatebatch.single.repository;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -52,6 +53,7 @@ class NonIdentityEntityRepositoryTest extends TestSupport {
         assertThat(find.getVersion()).isNotNull();
     }
 
+    @DisplayName("엔티티 한건씩 save 호출")
     @Test
     void saveAll() throws Exception {
         final List<NonIdentityEntity> nonIdentityEntities = LongStream.rangeClosed(1, 200)
@@ -64,11 +66,24 @@ class NonIdentityEntityRepositoryTest extends TestSupport {
         flush();
     }
 
+    @DisplayName("엔티티 목록 전체를 saveAll 호출")
+    @Test
+    void saveAll2() throws Exception {
+        final List<NonIdentityEntity> nonIdentityEntities = LongStream.rangeClosed(1, 200)
+                .mapToObj(NonIdentityEntity::of)
+                .collect(Collectors.toList());
+
+        nonIdentityEntityRepository.saveAll(nonIdentityEntities);
+        flush();
+    }
+
+    @DisplayName("저장한 목록 전체 한번에 업데이트")
     @Test
     void updateAll() throws Exception {
-        insertTestValues(INSERT_NON_IDENTITY, nonIdentityParameters(3));
+        final int size = 10;
+        insertTestValues(INSERT_NON_IDENTITY, nonIdentityParameters(size));
 
-        Pageable pageable = PageRequest.of(0, 10);
+        Pageable pageable = PageRequest.of(0, size);
         while (true) {
             final Slice<NonIdentityEntity> slice = nonIdentityEntityRepository.findAllIdentityEntities(pageable);
             final List<NonIdentityEntity> identityEntities = slice.getContent();

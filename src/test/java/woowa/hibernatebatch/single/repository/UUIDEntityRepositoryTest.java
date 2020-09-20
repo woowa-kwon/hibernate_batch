@@ -2,6 +2,7 @@ package woowa.hibernatebatch.single.repository;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Commit;
@@ -61,6 +62,7 @@ class UUIDEntityRepositoryTest extends TestSupport {
         assertThat(find.getC15()).isEqualTo(save.getC15());
     }
 
+    @DisplayName("2000 개 생성하여 한번에 저장")
     @Test
     void saveAll() throws Exception {
         final List<UUIDEntity> uuidEntities = Stream.generate(UUIDEntity::of)
@@ -71,9 +73,10 @@ class UUIDEntityRepositoryTest extends TestSupport {
         flush();
     }
 
+    @DisplayName("2000 개 한번에 업데이트")
     @Test
     void update() throws Exception {
-        insertTestValues(INSERT_UUID, uuidParameters(10));
+        insertTestValues(INSERT_UUID, uuidParameters(2000));
 
         final List<UUIDEntity> uuidEntities = uuidEntityRepository.findAll();
         uuidEntities.forEach(UUIDEntity::plus);
