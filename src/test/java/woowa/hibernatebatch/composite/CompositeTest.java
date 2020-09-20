@@ -32,7 +32,7 @@ public class CompositeTest extends TestSupport {
     @DisplayName("자동증가 엔티티와 자동증가 아닌 엔티티 번갈아가며 한건씩 save 호출")
     @Test
     void saveIdentityAndNonIdentity() throws Exception {
-        final int size = 5;
+        final int size = 3;
         final List<IdentityEntity> identityEntities = Stream.generate(IdentityEntity::of)
                 .limit(size)
                 .collect(Collectors.toList());
