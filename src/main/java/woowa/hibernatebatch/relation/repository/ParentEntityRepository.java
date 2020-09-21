@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ParentEntityRepository extends JpaRepository<ParentEntity, Long> {
 
-    @Query("SELECT DISTINCT p FROM ParentEntity p join fetch p.childs ORDER BY p.id")
+    @Query("SELECT DISTINCT p FROM ParentEntity p join fetch p.children ORDER BY p.id")
     List<ParentEntity> findAllParentAndChild();
 
 }

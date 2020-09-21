@@ -50,9 +50,9 @@ class ParentEntityRepositoryTest extends TestSupport {
         final ParentEntity find = parentRepository.findById(save.getId()).get();
         assertThat(find).isEqualTo(save);
 
-        final List<ChildEntity> childs = find.getChilds();
-        final ChildEntity findChild1 = childs.get(0);
-        final ChildEntity findChild2 = childs.get(1);
+        final List<ChildEntity> children = find.getChildren();
+        final ChildEntity findChild1 = children.get(0);
+        final ChildEntity findChild2 = children.get(1);
         assertThat(findChild1).isEqualTo(child1);
         assertThat(findChild2).isEqualTo(child2);
 

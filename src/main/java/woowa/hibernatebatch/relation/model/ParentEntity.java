@@ -36,7 +36,7 @@ public class ParentEntity {
 
     @ToString.Exclude
     @OneToMany(mappedBy = "parent", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    private List<ChildEntity> childs = new ArrayList<>();
+    private List<ChildEntity> children = new ArrayList<>();
 
     @Version
     @Column(name = "version", nullable = false)
@@ -54,7 +54,7 @@ public class ParentEntity {
     }
 
     public void addChild(ChildEntity child) {
-        childs.add(child);
+        children.add(child);
     }
 
     public void plus() {
@@ -64,7 +64,7 @@ public class ParentEntity {
         this.c4 = "c4-" + c1;
         this.c5 = "c5-" + c1;
 
-        childs.forEach(ChildEntity::plus);
+        children.forEach(ChildEntity::plus);
     }
 
 }
