@@ -148,13 +148,7 @@ class NonIdentityEntityRepositoryTest extends TestSupport {
         }
         stopWatch.stop();
 
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println("결과(초) : " + stopWatch.getTotalTimeSeconds());
-        System.out.println();
-        System.out.println();
-        System.out.println();
+        System.out.printf("%n%n%n결과(초) : %f%n%n%n%n", stopWatch.getTotalTimeSeconds());
     }
 
 }
